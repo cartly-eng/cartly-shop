@@ -2,8 +2,12 @@ import os
 
 from shop import db
 from shop.config import INVENTORY_URL, PAYMENTS_URL
-from shop.observability import ORDERS, log
+from shop.observability import ORDERS, log, tracer
 from shop.web import app, call_json
+
+PRICING_ENGINE = os.environ.get("PRICING_ENGINE", "v2")
+# v2: per-currency tax tables
+TAX_TABLE_V2 = {"USD": 0.0725, "INR": 0.18, "GBP": 0.20}
 
 
 
@@ -15,7 +19,12 @@ def readyz():
 
 
 def price_with_tax(item):
-    return int(item["price_cents"] * item["qty"] * 1.08)
+    subtotal = item["price_cents"] * item["qty"]
+    if PRICING_ENGINE == "v2":
+        with tracer.start_as_current_span("pricing.v2.compute_tax") as span:
+            span.set_attribute("pricing.currency", item["currency"])
+            return int(subtotal * (1 + TAX_TABLE_V2[item["currency"]]))
+    return int(subtotal * 1.08)
 
 
 @app.post("/checkout")
