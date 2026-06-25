@@ -7,7 +7,7 @@ from shop.web import app, call_json
 
 PRICING_ENGINE = os.environ.get("PRICING_ENGINE", "v2")
 # v2: per-currency tax tables
-TAX_TABLE_V2 = {"USD": 0.0725, "INR": 0.18, "GBP": 0.20}
+TAX_TABLE_V2 = {"USD": 0.0725, "INR": 0.18, "GBP": 0.20, "EUR": 0.19}
 
 
 
