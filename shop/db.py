@@ -14,7 +14,7 @@ _pool = None
 def dsn():
     return (f"host={os.environ.get('DB_HOST', 'postgres')} port={os.environ.get('DB_PORT', '5432')} "
             f"dbname={os.environ.get('DB_NAME', 'shop')} user={os.environ.get('DB_USER', 'shop')} "
-            f"password={os.environ.get('DB_PASSWORD', '')} connect_timeout=3 "
+            f"password={os.environ.get('DB_PASSWORD', '')} connect_timeout=3 application_name={SERVICE} "
             f"options='-c statement_timeout={os.environ.get('DB_STATEMENT_TIMEOUT_MS', '5000')}'")
 
 

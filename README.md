@@ -5,11 +5,12 @@ Cartly storefront services. One image, one Python package; `ROLE` selects the se
 | Role | Service | Talks to |
 |---|---|---|
 | `frontend` | storefront + `/api/*` | inventory, checkout |
-| `inventory` | catalog, stock, reservations | Postgres, Redis |
+| `inventory` | catalog, per-location stock (`stock_levels`), reservations | Postgres, Redis |
 | `checkout` | order placement, pricing | inventory, payments, Postgres |
 | `payments` | card authorization | payment-gateway |
 | `gateway` | acquirer integration edge | external acquirer |
-| `synthetics` | synthetic journeys (checkout, card authorization) | frontend, payments |
+| `promotions` | flash-sale deals and holds on `stock_levels` | Postgres |
+| `synthetics` | synthetic journeys (checkout, card authorization) | frontend, payments, promotions |
 
 All services: Prometheus metrics on `/metrics`, OTLP traces, JSON logs (`cartly-pycommons`).
 
