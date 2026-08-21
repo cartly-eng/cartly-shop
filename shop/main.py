@@ -12,7 +12,7 @@ from shop.web import app  # noqa: E402
 FastAPIInstrumentor.instrument_app(app, excluded_urls="metrics,healthz,readyz")
 
 if __name__ == "__main__":
-    if ROLE in ("inventory", "checkout"):
+    if ROLE in ("inventory", "checkout", "promotions"):
         from shop import db
         db.verify_on_startup()
     if ROLE == "synthetics":

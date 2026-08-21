@@ -5,7 +5,7 @@ import time
 
 import httpx
 
-from shop.config import FRONTEND_URL, PAYMENTS_URL
+from shop.config import FRONTEND_URL, PAYMENTS_URL, PROMOTIONS_URL
 from shop.observability import SYNTHETIC_LATENCY, SYNTHETIC_OK, log
 from shop.web import app  # noqa: F401  (serves /metrics)
 
@@ -44,6 +44,17 @@ def buy():
         time.sleep(random.uniform(0.8, 2.0))
 
 
+def promotions():
+    while True:
+        try:
+            deals = client.get(f"{PROMOTIONS_URL}/promotions/flash-sale").json().get("items", [])
+            if deals and random.random() < 0.5:
+                client.post(f"{PROMOTIONS_URL}/promotions/flash-sale/claim", json={"sku": random.choice(deals)["sku"]})
+        except Exception:
+            pass
+        time.sleep(random.uniform(4, 8))
+
+
 def journey(name, fn):
     while True:
         start = time.perf_counter()
@@ -71,6 +82,7 @@ def start():
         threading.Thread(target=browse, daemon=True).start()
     for _ in range(2):
         threading.Thread(target=buy, daemon=True).start()
+    threading.Thread(target=promotions, daemon=True).start()
     threading.Thread(target=journey, args=("checkout", checkout_journey), daemon=True).start()
     threading.Thread(target=journey, args=("payment_authorize", payments_journey), daemon=True).start()
     log.info("synthetic checks started")

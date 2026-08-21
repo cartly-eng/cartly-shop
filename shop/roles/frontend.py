@@ -41,6 +41,7 @@ def home():
 .card{{border:1px solid #ddd;border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:4px}}
 .err{{color:#b00}}#out{{margin-top:1rem;font-family:monospace}}</style>
 <h1>Cartly <small style="font-size:.5em;color:#888">v{APP_VERSION}</small></h1>
+<p><a href="/api/promotions/flash-sale">Flash sale</a></p>
 <div class=grid>{cards}</div><pre id=out></pre>
 <script>async function buy(sku){{const r=await fetch('/api/checkout',{{method:'POST',
 headers:{{'content-type':'application/json'}},body:JSON.stringify({{sku,qty:1}})}});
