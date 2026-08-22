@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.3
+- promotions: flash-sale service (`/promotions/flash-sale`, `/promotions/flash-sale/claim`) with promo holds on `stock_levels`.
+- inventory: per-location stock in `stock_levels`; `/products/{sku}/availability`; reservations update a location row.
+- all: DB sessions set `application_name` to the service name.
+
 ## 2.4.2
 - deps: cartly-pycommons 1.3.2 (request_id in logs, timeout classification).
 
