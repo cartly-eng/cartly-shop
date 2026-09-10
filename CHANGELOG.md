@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.0
+- all: request context propagation (`x-request-id`) and response replay buffer for error reports via
+  cartly-pycommons 1.4.0 `RequestContextMiddleware`.
+
 ## 2.4.3
 - promotions: flash-sale service (`/promotions/flash-sale`, `/promotions/flash-sale/claim`) with promo holds on `stock_levels`.
 - inventory: per-location stock in `stock_levels`; `/products/{sku}/availability`; reservations update a location row.
