@@ -10,7 +10,7 @@ COPY shop ./shop
 ARG APP_VERSION=dev
 ARG GIT_COMMIT=unknown
 ENV APP_VERSION=${APP_VERSION} GIT_COMMIT=${GIT_COMMIT} PYTHONUNBUFFERED=1
-LABEL org.opencontainers.image.source="https://github.com/prateekkanurkar-cmd/cartly-shop" \
+LABEL org.opencontainers.image.source="https://github.com/cartly-eng/cartly-shop" \
       org.opencontainers.image.version=${APP_VERSION} \
       org.opencontainers.image.revision=${GIT_COMMIT}
 USER 10001
