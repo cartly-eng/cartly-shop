@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.5
+- inventory: reservations take stock from the location with the most free stock.
+- web: `/healthz` is served on the event loop.
+
 ## 2.4.4
 - db: requests wait up to `DB_POOL_TIMEOUT_S` (30s) for a pooled connection instead of failing with `PoolError` (backport).
 
