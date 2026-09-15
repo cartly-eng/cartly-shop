@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.4
+- db: requests wait up to `DB_POOL_TIMEOUT_S` (30s) for a pooled connection instead of failing with `PoolError` (backport).
+
 ## 2.4.3
 - promotions: flash-sale service (`/promotions/flash-sale`, `/promotions/flash-sale/claim`) with promo holds on `stock_levels`.
 - inventory: per-location stock in `stock_levels`; `/products/{sku}/availability`; reservations update a location row.
