@@ -4,6 +4,7 @@ import time
 
 import httpx
 from cartly_commons.http import timed_call
+from cartly_commons.middleware import RequestContextMiddleware
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, PlainTextResponse
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
@@ -14,6 +15,8 @@ from shop.observability import DOWNSTREAM, HTTP_LATENCY, HTTP_REQUESTS, log
 SKIP_ROUTES = ("/metrics", "/healthz", "/readyz")
 
 app = FastAPI(title=SERVICE)
+# x-request-id propagation + response replay buffer for error reports (cartly-pycommons 1.4.0)
+app.add_middleware(RequestContextMiddleware)
 http = httpx.Client(timeout=httpx.Timeout(HTTP_TIMEOUT_S))
 
 
