@@ -48,7 +48,7 @@ def metrics():
 
 
 @app.get("/healthz")
-def healthz():
+async def healthz():  # event loop, so a saturated worker threadpool cannot fail liveness
     return {"status": "ok", "service": SERVICE, "version": APP_VERSION, "commit": GIT_COMMIT}
 
 
