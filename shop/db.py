@@ -1,5 +1,6 @@
 import os
 import sys
+import threading
 import time
 
 import psycopg2
@@ -18,16 +19,28 @@ def dsn():
             f"options='-c statement_timeout={os.environ.get('DB_STATEMENT_TIMEOUT_MS', '5000')}'")
 
 
+POOL_MAX = int(os.environ.get("DB_POOL_MAX", "10"))
+POOL_TIMEOUT_S = float(os.environ.get("DB_POOL_TIMEOUT_S", "30"))
+_slots = threading.BoundedSemaphore(POOL_MAX)
+
+
 def pool():
     global _pool
     if _pool is None:
-        _pool = psycopg2.pool.ThreadedConnectionPool(1, int(os.environ.get("DB_POOL_MAX", "10")), dsn())
+        _pool = psycopg2.pool.ThreadedConnectionPool(1, POOL_MAX, dsn())
     return _pool
 
 
 class conn:
     def __enter__(self):
-        self.c = pool().getconn()
+        # Wait for a free pooled connection instead of failing fast with PoolError.
+        if not _slots.acquire(timeout=POOL_TIMEOUT_S):
+            raise psycopg2.pool.PoolError(f"timed out after {POOL_TIMEOUT_S}s waiting for a database connection")
+        try:
+            self.c = pool().getconn()
+        except Exception:
+            _slots.release()
+            raise
         DB_POOL_IN_USE.labels(SERVICE).inc()
         return self.c
 
@@ -41,6 +54,7 @@ class conn:
             except Exception:
                 broken = True
         pool().putconn(self.c, close=broken)
+        _slots.release()
         DB_POOL_IN_USE.labels(SERVICE).dec()
         return False
 
