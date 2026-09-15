@@ -18,4 +18,4 @@ All services: Prometheus metrics on `/metrics`, OTLP traces, JSON logs (`cartly-
 
 1. Merge to `main` (CI runs tests).
 2. Tag `vX.Y.Z` → CI builds `drdroidtest.azurecr.io/cartly/shop-service:vX.Y.Z`.
-3. Promote by bumping the image tag for a service in [`cartly-deploy`](https://github.com/prateekkanurkar-cmd/cartly-deploy); ArgoCD syncs it.
+3. Promote by bumping the image tag for a service in [`cartly-deploy`](https://github.com/cartly-eng/cartly-deploy); ArgoCD syncs it.
