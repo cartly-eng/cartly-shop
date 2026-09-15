@@ -1,5 +1,4 @@
 import json
-import random
 
 import redis
 from fastapi import HTTPException
@@ -57,10 +56,12 @@ def reserve(body: dict):
         product = cur.fetchone()
         if not product:
             raise HTTPException(status_code=404, detail=f"unknown sku {sku}")
-        # Reserve from the location with the most free stock among a few candidates.
+        # Reserve from the location with the most free stock so orders ship from the fullest warehouse.
         cur.execute("UPDATE stock_levels SET reserved = reserved + %s, updated_at = now() "
-                    "WHERE sku = %s AND location_id = %s RETURNING location_id",
-                    (qty, sku, random.randint(1, 2500)))
+                    "WHERE sku = %s AND location_id = ("
+                    "  SELECT location_id FROM stock_levels WHERE sku = %s "
+                    "   ORDER BY qty - reserved - promo_hold DESC LIMIT 1) "
+                    "RETURNING location_id", (qty, sku, sku))
         if not cur.fetchone():
             raise HTTPException(status_code=409, detail=f"no stock record for {sku}")
     return {"sku": sku, "qty": qty, "name": product[0], "category": product[1],
