@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.1
+- db: requests wait up to `DB_POOL_TIMEOUT_S` (30s) for a pooled connection instead of failing with `PoolError`.
+
 ## 2.5.0
 - all: request context propagation (`x-request-id`) and response replay buffer for error reports via
   cartly-pycommons 1.4.0 `RequestContextMiddleware`.
