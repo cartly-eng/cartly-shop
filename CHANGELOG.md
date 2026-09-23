@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.3
+- deps: cartly-pycommons 1.5.0 — request-context replay buffer captures full responses (512 KB).
+
 ## 2.5.2
 - inventory: reservations take stock from the location with the most free stock.
 - web: `/healthz` is served on the event loop.
