@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.4
+- build: install cartly-pycommons over https (repositories are public).
+
 ## 2.5.3
 - deps: cartly-pycommons 1.5.0 — request-context replay buffer captures full responses (512 KB).
 

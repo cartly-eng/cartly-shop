@@ -1,11 +1,10 @@
 # syntax=docker/dockerfile:1.7
 FROM python:3.12-slim
-RUN apt-get update && apt-get install -y --no-install-recommends git openssh-client \
- && rm -rf /var/lib/apt/lists/* \
- && mkdir -p -m 0700 /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
+RUN apt-get update && apt-get install -y --no-install-recommends git \
+ && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY requirements.txt .
-RUN --mount=type=ssh pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 COPY shop ./shop
 ARG APP_VERSION=dev
 ARG GIT_COMMIT=unknown

@@ -11,4 +11,4 @@ opentelemetry-instrumentation-fastapi==0.51b0
 opentelemetry-instrumentation-httpx==0.51b0
 opentelemetry-instrumentation-psycopg2==0.51b0
 opentelemetry-instrumentation-redis==0.51b0
-cartly-pycommons @ git+ssh://git@github.com/cartly-eng/cartly-pycommons.git@v1.5.0
+cartly-pycommons @ git+https://github.com/cartly-eng/cartly-pycommons.git@v1.5.0
